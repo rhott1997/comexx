@@ -1,8 +1,8 @@
 :root {
   color-scheme: light;
-  font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
   background: #f5f7fb;
-  color: #0f1b2d;
+  color: #12213a;
 }
 
 * {
@@ -15,34 +15,32 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  background: radial-gradient(circle at top, #f0f4ff 0%, #f6f8fc 40%, #f5f7fb 100%);
+  gap: 2rem;
 }
 
 header.app-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 2rem;
-  padding: 2.5rem 8vw 0;
+  align-items: center;
+  padding: 2.5rem 8vw 1rem;
 }
 
 header .eyebrow {
   text-transform: uppercase;
   font-size: 0.8rem;
   letter-spacing: 0.2rem;
-  color: #607089;
+  color: #5c6b80;
 }
 
 header h1 {
-  font-size: clamp(2rem, 2.6vw, 3rem);
+  font-size: clamp(1.8rem, 2.5vw, 2.6rem);
   margin-top: 0.5rem;
 }
 
 header .subtitle {
   margin-top: 0.75rem;
   color: #4a5a72;
-  max-width: 620px;
+  max-width: 560px;
   line-height: 1.5;
 }
 
@@ -50,7 +48,6 @@ header .header-actions {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  flex-wrap: wrap;
 }
 
 button {
@@ -66,7 +63,7 @@ button {
 
 button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 24px rgba(18, 70, 211, 0.25);
+  box-shadow: 0 8px 18px rgba(18, 70, 211, 0.25);
 }
 
 button.ghost {
@@ -75,80 +72,11 @@ button.ghost {
   border: 1px solid rgba(18, 70, 211, 0.2);
 }
 
-button.primary {
-  background: linear-gradient(135deg, #1246d3, #4c8dff);
-}
-
-.tabs {
-  display: flex;
-  gap: 0.75rem;
-  padding: 0 8vw;
-  flex-wrap: wrap;
-}
-
-.tab {
-  border-radius: 999px;
-  background: white;
-  border: 1px solid #e3e8f2;
-  padding: 0.6rem 1.4rem;
-  font-weight: 600;
-  color: #4a5a72;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.tab.active {
-  background: #1246d3;
-  color: white;
-  border-color: transparent;
-  box-shadow: 0 8px 20px rgba(18, 70, 211, 0.2);
-}
-
 main {
   display: flex;
   flex-direction: column;
   gap: 2rem;
   padding: 0 8vw 2rem;
-}
-
-.view {
-  display: none;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.view.active {
-  display: flex;
-}
-
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-}
-
-.metric-card {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(15, 27, 45, 0.08);
-}
-
-.metric-card span {
-  color: #5c6b80;
-  font-size: 0.85rem;
-}
-
-.metric-card strong {
-  display: block;
-  font-size: 2rem;
-  margin: 0.5rem 0;
-}
-
-.metric-card p {
-  color: #5c6b80;
-  font-size: 0.85rem;
-  line-height: 1.4;
 }
 
 .grid {
@@ -199,7 +127,6 @@ label select {
   border: 1px solid #d7dde7;
   font-size: 0.95rem;
   color: #12213a;
-  background: white;
 }
 
 label.info input {
@@ -258,97 +185,6 @@ label.info input {
   margin-top: 0.2rem;
 }
 
-.workflow-hero {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  background: white;
-  padding: 1.5rem;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(15, 27, 45, 0.08);
-}
-
-.pill {
-  background: #f0f4ff;
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  color: #1246d3;
-  font-weight: 600;
-}
-
-.workflow-lanes {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.2rem;
-}
-
-.workflow-lane {
-  background: white;
-  border-radius: 18px;
-  padding: 1rem;
-  box-shadow: 0 10px 24px rgba(15, 27, 45, 0.08);
-  min-height: 280px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.workflow-lane-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 600;
-}
-
-.workflow-lane-header span {
-  background: #eaf1ff;
-  color: #1246d3;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-}
-
-.workflow-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.workflow-card {
-  border: 1px solid #e7ecf5;
-  border-radius: 16px;
-  padding: 0.9rem;
-  background: #f9faff;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.workflow-card h4 {
-  font-size: 0.95rem;
-}
-
-.workflow-card span {
-  color: #5c6b80;
-  font-size: 0.8rem;
-}
-
-.status-pill {
-  align-self: flex-start;
-  background: #e7f7ed;
-  color: #1b7a3d;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.muted {
-  color: #8a97ab;
-  font-size: 0.85rem;
-}
-
 .timeline {
   display: flex;
   flex-direction: column;
@@ -401,64 +237,19 @@ label.info input {
   color: #b42318;
 }
 
-.analytics-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
-}
-
-.chart {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.chart-row {
-  display: grid;
-  gap: 0.6rem;
-}
-
-.chart-row strong {
-  font-size: 0.95rem;
-}
-
-.chart-row span {
-  color: #6c7a91;
-  font-size: 0.85rem;
-}
-
-.chart-bar {
-  background: #eef2f9;
-  border-radius: 999px;
-  height: 10px;
-  overflow: hidden;
-}
-
-.chart-bar span {
-  display: block;
-  height: 100%;
-  background: linear-gradient(90deg, #1246d3, #6aa1ff);
-}
-
 footer {
   text-align: center;
   padding: 1.5rem;
   color: #5c6b80;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 720px) {
   header.app-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1.5rem;
   }
 
-  .workflow-hero {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-@media (max-width: 720px) {
   .timeline-header {
     flex-direction: column;
     align-items: flex-start;

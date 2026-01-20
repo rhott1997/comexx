@@ -11,27 +11,8 @@ const totalValue = document.getElementById("totalValue");
 const remainingTons = document.getElementById("remainingTons");
 const remainingValue = document.getElementById("remainingValue");
 const resetDataButton = document.getElementById("resetData");
-const seedDataButton = document.getElementById("seedData");
-const workflowLanes = document.getElementById("workflowLanes");
-const workflowUpdated = document.getElementById("workflowUpdated");
-const productChart = document.getElementById("productChart");
-const pimChart = document.getElementById("pimChart");
-
-const metricTotalTons = document.getElementById("metricTotalTons");
-const metricTotalValue = document.getElementById("metricTotalValue");
-const metricPims = document.getElementById("metricPims");
-const metricSlaRisk = document.getElementById("metricSlaRisk");
 
 const STORAGE_KEY = "comexx-data";
-
-const WORKFLOW_STEPS = [
-  "Requerimiento aprobado",
-  "PIM creado",
-  "Contrato en validación",
-  "Contrato validado",
-  "Pago en proceso",
-  "Despacho / logística",
-];
 
 const state = {
   products: [],
@@ -65,77 +46,6 @@ const loadState = () => {
     state.pims = parsed.pims || [];
     state.contracts = parsed.contracts || [];
   }
-};
-
-const seedDemoData = () => {
-  state.products = [
-    { code: "MP-001", name: "Polímero base", price: 1200, lastImport: "2024-08-14" },
-    { code: "MP-045", name: "Resina PET", price: 980, lastImport: "2024-08-09" },
-    { code: "PT-210", name: "Envase premium", price: 1850, lastImport: "2024-08-01" },
-  ];
-  state.requirements = [
-    {
-      id: crypto.randomUUID(),
-      productCode: "MP-001",
-      productName: "Polímero base",
-      quantity: 120,
-      unitPrice: 1200,
-      totalValue: 144000,
-    },
-    {
-      id: crypto.randomUUID(),
-      productCode: "MP-045",
-      productName: "Resina PET",
-      quantity: 80,
-      unitPrice: 980,
-      totalValue: 78400,
-    },
-    {
-      id: crypto.randomUUID(),
-      productCode: "PT-210",
-      productName: "Envase premium",
-      quantity: 40,
-      unitPrice: 1850,
-      totalValue: 74000,
-    },
-  ];
-  state.pims = [
-    {
-      id: "PIM-2024-09 / PIM-2024-09-A",
-      subId: "PIM-2024-09-A",
-      factory: "Planta Norte",
-      supplier: "Trader Andes",
-      productCode: "MP-001",
-      quantity: 60,
-      payment: "Carta de crédito",
-      status: "Contrato en validación",
-      totalValue: 72000,
-      workflowStep: WORKFLOW_STEPS[2],
-    },
-    {
-      id: "PIM-2024-09 / PIM-2024-09-B",
-      subId: "PIM-2024-09-B",
-      factory: "Planta Caribe",
-      supplier: "Trader Andes",
-      productCode: "MP-045",
-      quantity: 50,
-      payment: "Anticipo",
-      status: "Pago en proceso",
-      totalValue: 49000,
-      workflowStep: WORKFLOW_STEPS[4],
-    },
-  ];
-  state.contracts = [
-    {
-      pimId: "PIM-2024-09 / PIM-2024-09-A",
-      status: "Pendiente de revisión",
-      sla: 12,
-      notification: "Enviar correo a compras",
-      dueDate: "2024-09-20",
-      slaStatus: "En tiempo",
-      updatedAt: new Date().toLocaleString("es-CO"),
-    },
-  ];
 };
 
 const getRemainingForProduct = (productCode) => {
@@ -213,15 +123,6 @@ const addDays = (dateString, days) => {
   const date = new Date(dateString);
   date.setDate(date.getDate() + days);
   return date;
-};
-
-const updateWorkflowStep = (pim, status) => {
-  const mapping = {
-    "Pendiente de revisión": WORKFLOW_STEPS[2],
-    "Contrato validado": WORKFLOW_STEPS[3],
-    Observaciones: WORKFLOW_STEPS[2],
-  };
-  pim.workflowStep = mapping[status] || pim.workflowStep || WORKFLOW_STEPS[1];
 };
 
 const renderProducts = () => {
@@ -312,96 +213,6 @@ const renderContracts = () => {
     .join("");
 };
 
-const renderWorkflow = () => {
-  workflowUpdated.textContent = new Date().toLocaleString("es-CO");
-  workflowLanes.innerHTML = WORKFLOW_STEPS.map((step) => {
-    const items = state.pims.filter((pim) => pim.workflowStep === step);
-    const cards = items
-      .map(
-        (pim) => `
-        <div class="workflow-card">
-          <div>
-            <h4>${pim.id}</h4>
-            <span>${pim.factory} · ${pim.supplier}</span>
-          </div>
-          <p>${pim.productCode} · ${formatNumber(pim.quantity)} TM</p>
-          <span class="status-pill">${pim.payment}</span>
-        </div>`
-      )
-      .join("");
-    return `
-      <div class="workflow-lane">
-        <div class="workflow-lane-header">
-          <h3>${step}</h3>
-          <span>${items.length}</span>
-        </div>
-        <div class="workflow-cards">${cards || "<p class=\"muted\">Sin PIMs</p>"}</div>
-      </div>`;
-  }).join("");
-};
-
-const renderCharts = () => {
-  const totalTonsValue = state.requirements.reduce((sum, req) => sum + req.quantity, 0) || 1;
-  productChart.innerHTML = state.requirements
-    .map((req) => {
-      const width = Math.round((req.quantity / totalTonsValue) * 100);
-      return `
-        <div class="chart-row">
-          <div>
-            <strong>${req.productCode}</strong>
-            <span>${formatNumber(req.quantity)} TM</span>
-          </div>
-          <div class="chart-bar"><span style="width:${width}%"></span></div>
-        </div>`;
-    })
-    .join("");
-
-  const statusCounts = state.pims.reduce(
-    (acc, pim) => {
-      acc[pim.status] = (acc[pim.status] || 0) + 1;
-      return acc;
-    },
-    { "Sin PIMs": 0 }
-  );
-  const statusKeys = Object.keys(statusCounts);
-  const maxCount = Math.max(...Object.values(statusCounts), 1);
-  pimChart.innerHTML = statusKeys
-    .map((status) => {
-      const width = Math.round((statusCounts[status] / maxCount) * 100);
-      return `
-        <div class="chart-row">
-          <div>
-            <strong>${status}</strong>
-            <span>${statusCounts[status]} PIMs</span>
-          </div>
-          <div class="chart-bar"><span style="width:${width}%"></span></div>
-        </div>`;
-    })
-    .join("");
-};
-
-const renderMetrics = () => {
-  const totalTonsValue = state.requirements.reduce((sum, req) => sum + req.quantity, 0);
-  const totalValueValue = state.requirements.reduce((sum, req) => sum + req.totalValue, 0);
-  const slaRisk = state.contracts.filter((contract) => contract.slaStatus === "Atrasado").length;
-
-  metricTotalTons.textContent = formatNumber(totalTonsValue);
-  metricTotalValue.textContent = formatCurrency(totalValueValue);
-  metricPims.textContent = state.pims.length;
-  metricSlaRisk.textContent = slaRisk;
-};
-
-const renderAll = () => {
-  renderProducts();
-  renderRequirements();
-  renderPims();
-  renderContracts();
-  renderWorkflow();
-  renderCharts();
-  renderMetrics();
-  updateRequirementSelectors();
-};
-
 productForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const data = new FormData(productForm);
@@ -424,7 +235,8 @@ productForm.addEventListener("submit", (event) => {
 
   productForm.reset();
   saveState();
-  renderAll();
+  renderProducts();
+  updateRequirementSelectors();
 });
 
 requirementForm.addEventListener("submit", (event) => {
@@ -450,7 +262,8 @@ requirementForm.addEventListener("submit", (event) => {
   state.requirements.push(requirement);
   requirementForm.reset();
   saveState();
-  renderAll();
+  renderRequirements();
+  updateRequirementPreview();
 });
 
 pimForm.addEventListener("submit", (event) => {
@@ -477,24 +290,22 @@ pimForm.addEventListener("submit", (event) => {
     return;
   }
 
-  const pimId = subId ? `${id} / ${subId}` : id;
-
   state.pims.push({
-    id: pimId,
+    id: subId ? `${id} / ${subId}` : id,
     subId: subId || null,
     factory,
     supplier,
     productCode,
     quantity,
     payment,
-    status: "Contrato en validación",
+    status: "Contrato pendiente",
     totalValue: product.price * quantity,
-    workflowStep: WORKFLOW_STEPS[1],
   });
 
   pimForm.reset();
   saveState();
-  renderAll();
+  renderPims();
+  updateRequirementSelectors();
 });
 
 contractForm.addEventListener("submit", (event) => {
@@ -512,7 +323,6 @@ contractForm.addEventListener("submit", (event) => {
   }
 
   pim.status = status;
-  updateWorkflowStep(pim, status);
 
   const dueDate = addDays(startDate, sla);
   const now = new Date();
@@ -530,7 +340,8 @@ contractForm.addEventListener("submit", (event) => {
 
   state.contracts.unshift(contractEntry);
   saveState();
-  renderAll();
+  renderPims();
+  renderContracts();
   contractForm.reset();
 });
 
@@ -547,7 +358,10 @@ productTable.addEventListener("click", (event) => {
   state.requirements = state.requirements.filter((req) => req.productCode !== code);
   state.pims = state.pims.filter((pim) => pim.productCode !== code);
   saveState();
-  renderAll();
+  renderProducts();
+  renderRequirements();
+  renderPims();
+  updateRequirementSelectors();
 });
 
 requirementTable.addEventListener("click", (event) => {
@@ -561,7 +375,7 @@ requirementTable.addEventListener("click", (event) => {
   }
   state.requirements = state.requirements.filter((req) => req.id !== id);
   saveState();
-  renderAll();
+  renderRequirements();
 });
 
 pimTable.addEventListener("click", (event) => {
@@ -576,7 +390,9 @@ pimTable.addEventListener("click", (event) => {
   state.pims = state.pims.filter((pim) => pim.id !== id);
   state.contracts = state.contracts.filter((contract) => contract.pimId !== id);
   saveState();
-  renderAll();
+  renderPims();
+  renderContracts();
+  updateRequirementSelectors();
 });
 
 requirementForm.addEventListener("input", updateRequirementPreview);
@@ -589,27 +405,17 @@ resetDataButton.addEventListener("click", () => {
     state.pims = [];
     state.contracts = [];
     saveState();
-    renderAll();
+    renderProducts();
+    renderRequirements();
+    renderPims();
+    renderContracts();
+    updateRequirementSelectors();
   }
 });
 
-seedDataButton.addEventListener("click", () => {
-  seedDemoData();
-  saveState();
-  renderAll();
-});
-
-const tabs = document.querySelectorAll(".tab");
-const views = document.querySelectorAll(".view");
-
-tabs.forEach((tab) => {
-  tab.addEventListener("click", () => {
-    tabs.forEach((btn) => btn.classList.remove("active"));
-    views.forEach((view) => view.classList.remove("active"));
-    tab.classList.add("active");
-    document.getElementById(tab.dataset.view).classList.add("active");
-  });
-});
-
 loadState();
-renderAll();
+renderProducts();
+renderRequirements();
+renderPims();
+renderContracts();
+updateRequirementSelectors();
