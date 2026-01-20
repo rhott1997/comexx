@@ -1,0 +1,257 @@
+:root {
+  color-scheme: light;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background: #f5f7fb;
+  color: #12213a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+header.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2.5rem 8vw 1rem;
+}
+
+header .eyebrow {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.2rem;
+  color: #5c6b80;
+}
+
+header h1 {
+  font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+  margin-top: 0.5rem;
+}
+
+header .subtitle {
+  margin-top: 0.75rem;
+  color: #4a5a72;
+  max-width: 560px;
+  line-height: 1.5;
+}
+
+header .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+button {
+  border: none;
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  background: #1246d3;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(18, 70, 211, 0.25);
+}
+
+button.ghost {
+  background: transparent;
+  color: #1246d3;
+  border: 1px solid rgba(18, 70, 211, 0.2);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 0 8vw 2rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 20px 40px rgba(18, 33, 58, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card-header h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.card-header p {
+  color: #4a5a72;
+  line-height: 1.5;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  align-items: end;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: #4a5a72;
+}
+
+label input,
+label select {
+  padding: 0.65rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid #d7dde7;
+  font-size: 0.95rem;
+  color: #12213a;
+}
+
+label.info input {
+  background: #f5f7fb;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.table-wrapper th,
+.table-wrapper td {
+  text-align: left;
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.table-wrapper th {
+  font-weight: 600;
+  color: #5c6b80;
+}
+
+.table-wrapper td button {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.75rem;
+  border-radius: 999px;
+}
+
+.summary {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.summary div {
+  background: #f5f7fb;
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  min-width: 180px;
+}
+
+.summary span {
+  color: #5c6b80;
+  font-size: 0.85rem;
+}
+
+.summary strong {
+  display: block;
+  font-size: 1.2rem;
+  margin-top: 0.2rem;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.timeline-item {
+  background: #f8f9fd;
+  padding: 1rem;
+  border-radius: 16px;
+  border: 1px solid #e4e9f3;
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.timeline-item h4 {
+  margin-bottom: 0.2rem;
+}
+
+.timeline-item p {
+  color: #4a5a72;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #eaf1ff;
+  color: #1246d3;
+}
+
+.status-badge.badge-success {
+  background: #e7f7ed;
+  color: #1b7a3d;
+}
+
+.status-badge.badge-danger {
+  background: #fdebea;
+  color: #b42318;
+}
+
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: #5c6b80;
+}
+
+@media (max-width: 720px) {
+  header.app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .timeline-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

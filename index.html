@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comexx | Seguimiento de Importaciones</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Comexx</p>
+      <h1>Seguimiento integral del proceso de importación</h1>
+      <p class="subtitle">
+        Administra requerimientos mensuales, controla PIMs, valida contratos y gestiona SLA, pagos y notificaciones.
+      </p>
+    </div>
+    <div class="header-actions">
+      <button id="resetData" class="ghost">Restablecer datos</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="grid">
+      <article class="card">
+        <div class="card-header">
+          <h2>1. Catálogo de productos</h2>
+          <p>Registra códigos de materia prima y producto terminado con su último precio de importación.</p>
+        </div>
+        <form id="productForm" class="form-grid">
+          <label>
+            Código
+            <input type="text" name="code" placeholder="MP-001" required />
+          </label>
+          <label>
+            Descripción
+            <input type="text" name="name" placeholder="Polímero base" required />
+          </label>
+          <label>
+            Último precio (USD/TM)
+            <input type="number" name="price" step="0.01" min="0" required />
+          </label>
+          <label>
+            Fecha última importación
+            <input type="date" name="date" required />
+          </label>
+          <button type="submit">Guardar producto</button>
+        </form>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Último precio</th>
+                <th>Última importación</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="productTable"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <h2>2. Requerimiento mensual</h2>
+          <p>Selecciona los materiales y define cantidades para calcular el valor total del cuadro.</p>
+        </div>
+        <form id="requirementForm" class="form-grid">
+          <label>
+            Producto
+            <select name="product" required></select>
+          </label>
+          <label>
+            Cantidad (TM)
+            <input type="number" name="quantity" step="0.01" min="0" required />
+          </label>
+          <label class="info">
+            Último precio (USD/TM)
+            <input type="text" name="lastPrice" readonly />
+          </label>
+          <label class="info">
+            Valor estimado (USD)
+            <input type="text" name="estimated" readonly />
+          </label>
+          <button type="submit">Agregar requerimiento</button>
+        </form>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Cantidad (TM)</th>
+                <th>Precio USD/TM</th>
+                <th>Valor USD</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="requirementTable"></tbody>
+          </table>
+        </div>
+        <div class="summary">
+          <div>
+            <span>Total requerimiento (TM)</span>
+            <strong id="totalTons">0</strong>
+          </div>
+          <div>
+            <span>Valor total estimado (USD)</span>
+            <strong id="totalValue">0</strong>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="card-header">
+          <h2>3. Creación de PIMs</h2>
+          <p>Consolida requerimientos y divide cierres en sub-PIMs por fábrica o entregas parciales.</p>
+        </div>
+        <form id="pimForm" class="form-grid">
+          <label>
+            PIM principal
+            <input type="text" name="pim" placeholder="PIM-2024-09" required />
+          </label>
+          <label>
+            Sub-PIM (opcional)
+            <input type="text" name="subpim" placeholder="PIM-2024-09-A" />
+          </label>
+          <label>
+            Fábrica
+            <input type="text" name="factory" placeholder="Planta Norte" required />
+          </label>
+          <label>
+            Proveedor
+            <input type="text" name="supplier" placeholder="Trader XYZ" required />
+          </label>
+          <label>
+            Producto
+            <select name="product" required></select>
+          </label>
+          <label>
+            Cantidad (TM)
+            <input type="number" name="quantity" step="0.01" min="0" required />
+          </label>
+          <label>
+            Método de pago
+            <select name="payment" required>
+              <option value="Carta de crédito">Carta de crédito</option>
+              <option value="Anticipo">Anticipo</option>
+              <option value="Pago contado">Pago contado</option>
+            </select>
+          </label>
+          <label class="info">
+            Saldo pendiente (TM)
+            <input type="text" name="balance" readonly />
+          </label>
+          <button type="submit">Agregar PIM</button>
+        </form>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>PIM</th>
+                <th>Sub-PIM</th>
+                <th>Fábrica</th>
+                <th>Proveedor</th>
+                <th>Producto</th>
+                <th>Cantidad (TM)</th>
+                <th>Pago</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="pimTable"></tbody>
+          </table>
+        </div>
+        <div class="summary">
+          <div>
+            <span>Requerimiento pendiente (TM)</span>
+            <strong id="remainingTons">0</strong>
+          </div>
+          <div>
+            <span>Requerimiento pendiente (USD)</span>
+            <strong id="remainingValue">0</strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <h2>4. Seguimiento de contrato</h2>
+          <p>Valida contratos, programa SLA y registra notificaciones para alertas a tiempo.</p>
+        </div>
+        <form id="contractForm" class="form-grid">
+          <label>
+            PIM / Sub-PIM
+            <select name="pim" required></select>
+          </label>
+          <label>
+            Estado contrato
+            <select name="status" required>
+              <option value="Pendiente de revisión">Pendiente de revisión</option>
+              <option value="Contrato validado">Contrato validado</option>
+              <option value="Observaciones">Observaciones</option>
+            </select>
+          </label>
+          <label>
+            Fecha inicio contrato
+            <input type="date" name="startDate" required />
+          </label>
+          <label>
+            SLA estimado (días)
+            <input type="number" name="sla" step="1" min="0" required />
+          </label>
+          <label>
+            Notificación
+            <input type="text" name="notification" placeholder="Enviar correo a compras" required />
+          </label>
+          <button type="submit">Actualizar seguimiento</button>
+        </form>
+        <div class="timeline" id="contractTimeline"></div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>Este prototipo permite controlar requerimientos, PIMs, contratos y pagos en un solo flujo.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
